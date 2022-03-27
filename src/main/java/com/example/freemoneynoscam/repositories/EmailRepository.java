@@ -36,7 +36,6 @@ public class EmailRepository {
             }
 
             return emails;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,7 +46,7 @@ public class EmailRepository {
     public void connectToDb() {
         try {
             String url = "jdbc:mysql://localhost:3306/free_money";
-            con = DriverManager.getConnection(url, "root", "Wyr48gqfDB!");
+            con = DriverManager.getConnection(url, "root", "password");
         } catch (SQLException e) {
             e.printStackTrace();
         }
