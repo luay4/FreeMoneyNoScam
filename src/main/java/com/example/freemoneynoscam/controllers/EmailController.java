@@ -1,16 +1,18 @@
 package com.example.freemoneynoscam.controllers;
 
-import com.example.freemoneynoscam.services.EmailDBManager;
+import com.example.freemoneynoscam.model.Email;
+import com.example.freemoneynoscam.repositories.EmailRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.List;
 
 @Controller
-public class IndexController {
-
-    private EmailDBManager edb = new EmailDBManager();
+public class EmailController {
+    private EmailRepository er = new EmailRepository();
 
     @GetMapping("/")
     public String index() {
@@ -19,7 +21,7 @@ public class IndexController {
 
     @PostMapping("/test")
     public String test(WebRequest dataFromForm) {
-        boolean result = edb.insertEmailIntoDB(dataFromForm.getParameter("email"));
+        boolean result = er.insertEmailIntoDB(dataFromForm.getParameter("email"));
         System.out.println(dataFromForm.getParameter("email"));
 
         if (result) {
@@ -37,5 +39,19 @@ public class IndexController {
     @GetMapping("/failure")
     public String failure() {
         return "failure";
+    }
+
+    @GetMapping("/email")
+    public String getEmail(Model m) {
+        String email = er.fetchSingleEmail();
+        m.addAttribute("email", email);
+        return "singleEmail";
+    }
+
+    @GetMapping("/all-emails")
+    public String getAllEmails(Model model) {
+        List<Email> emails = er.fetchAllEmails();
+        model.addAttribute("emails", emails);
+        return "allEmails";
     }
 }
